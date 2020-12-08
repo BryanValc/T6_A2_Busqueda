@@ -1,6 +1,29 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+
+class Insercion {
+	
+	public static void ordenacionInsercion(int nums[]) {
+		int numeros[]=nums.clone();
+		int aux;
+		
+		for (int i = 1; i < numeros.length; i++) {
+			aux=numeros[i];
+			for (int j=i-1; j>=0 && numeros[j]>aux ; j--) {
+				numeros[j+1]=numeros[j];
+				numeros[j]=aux;
+			}
+			
+		}
+		
+		
+		
+	}
+	
+}//class Insercion
+
+
 class Menu{
 	static Scanner input = new Scanner(System.in);
 	
