@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 class Insercion {
 	
-	public static void ordenacionInsercion(int nums[]) {
+	public static int[] ordenacionInsercion(int nums[]) {
 		int numeros[]=nums.clone();
 		int aux;
 		
@@ -17,7 +17,7 @@ class Insercion {
 			
 		}
 		
-		
+		return numeros;
 		
 	}
 	
@@ -26,6 +26,61 @@ class Insercion {
 
 class Menu{
 	static Scanner input = new Scanner(System.in);
+	
+	public static void impresionNumeros(int[] nums) {
+		System.out.println();
+		
+		int max = nums[0];
+	    for (int a : nums) {
+	        if (a > max)
+	            max = a;
+	    }
+	    int maxS= Integer.toString(max).length();
+		
+		if (nums.length<=900) {
+			for (int i = 0; i < nums.length; i++) {
+				
+				if(i!=0 && i%((int)Math.sqrt(nums.length))==0) {
+					System.out.println();
+				}else if(i==0) {
+					System.out.print("[");
+				}
+				System.out.print(nums[i]);
+				for (int k = 0; k < (maxS-Integer.toString(nums[i]).length()); k++) {
+					System.out.print(' ');
+				}
+				if(i==0) {
+					System.out.print(' ');
+				}else {
+					System.out.print("  ");
+				}
+				
+			}
+		}else {
+			System.out.println("El arreglo es demasiado largo y el menu se puede bugear, solo se van a imprimir 900 muestras");
+			int salto = (int)(nums.length/900);
+			int j = -1;
+			for (int i = (int)(salto/2); i < nums.length; i+=salto) {
+				j+=1;
+				if(i!=0 && j%30==0) {
+					System.out.println();
+				}else if(i==salto) {
+					System.out.print("[");
+				}
+				System.out.print(nums[i]);
+				for (int k = 0; k < (maxS-Integer.toString(nums[i]).length()); k++) {
+					System.out.print(' ');
+				}
+				if(i==0) {
+					System.out.print(' ');
+				}else {
+					System.out.print("  ");
+				}
+				
+			}
+		}
+		System.out.println("]");
+	}
 	
 	public static int validacionNatural() {
 		int ret = 0;
@@ -82,37 +137,43 @@ class BusquedaBinaria {
 
 }
 
-class FuncionHash {
-
-	private String[] arreglo;
-	private int tamaño;
-	private int contador;
-	
-	public String[] getArreglo(){
-		return this.arreglo;
+class Hash{
+	String[] arreglo;
+	int tamaño;
+	int contador;
+	int [] contador1=new int[3];// 1-> recorridos 2-> intercambios 3-> comparaciones
+	public void reiniciarContador() {
+		contador1[0]=0;
+		contador1[2]=0;
 	}
-
+	public void mostrarContador() {
+		System.out.println("Numero de recorridos-> "+contador1[0]);
+		System.out.println("Numero de Comparaciones-> "+contador1[2]);
+		contador1[0]=0;
+		contador1[2]=0;
+	}
 	// Constructor
-	public FuncionHash(int tam) {
+	public Hash(int tam) {
 		tamaño = tam;
 		arreglo = new String[tam];
 		Arrays.fill(arreglo, "-1");
 	}
 
-	// Funcion HASH
 	public void funcionHash(String[] cadArreglo, String[] arreglo) {
 		int i;
 		// Ciclo para asiganar a la varible elemento el valor de la cadena
 		for (i = 0; i < cadArreglo.length; i++) {
+			contador1[0]++;
 			String elemento = cadArreglo[i];
-			int indiceArreglo = Integer.parseInt(elemento) % 7;
+			int indiceArreglo = Integer.parseInt(elemento) % 20;
 			System.out.println("Indice: " + indiceArreglo + " para " + elemento);
 			// Mpetodo para solucionar una colision
 			while (arreglo[indiceArreglo] != "-1") {
+				contador1[2]++;
+				contador1[0]++;
 				indiceArreglo++;
 				System.out.println("Colisión en el indice: " + (indiceArreglo - 1) + " cambiando por " + indiceArreglo);
-				// Cambiar al indice siguiente y asi evitar la colision
-				indiceArreglo %= tamaño; // Para volver a sacar el valor
+				indiceArreglo %= tamaño; 
 			}
 			arreglo[indiceArreglo] = elemento;
 		}
@@ -124,19 +185,15 @@ class FuncionHash {
 		int j;
 
 		for (int i = 0; i < 1; i++) {
-			incremento += 8;
-			for (j = 0; j < 100; j++) {
-			}
+			incremento += 100;
 			System.out.println("");
 			System.out.println("------------------------------------------------------------------");
-			for (j = incremento - 8; j < incremento; j++) {
+			for (j = incremento - 100; j < incremento; j++) {
 				System.out.format(" | %3s " + " ", j);
 			}
 			System.out.println(" | ");
-			for (int k = 0; k < 100; k++) {
-			}
 			System.out.println();
-			for (j = incremento - 8; j < incremento; j++) {
+			for (j = incremento - 100; j < incremento; j++) {
 				if (arreglo[j].equals("-1")) {
 					System.out.println(" | ");
 				} else {
@@ -146,8 +203,6 @@ class FuncionHash {
 
 			System.out.println("|");
 			System.out.println("------------------------------------------------------------------");
-			for (j = 0; j < 100; j++) {
-			}
 			System.out.println("");
 		}
 	}
@@ -155,25 +210,27 @@ class FuncionHash {
 	// Metodo para buscar una clave de los elementos
 	public String buscarClave(String elemento) {
 		
-		int indiceArrglo = Integer.parseInt(elemento) % 7;
+		int indiceArrglo = Integer.parseInt(elemento) % 99;
 		int contador = 0;
 		
 		while (arreglo[indiceArrglo] != "-1") {
-			if (arreglo[indiceArrglo] == elemento) {
-				System.out.println("Elemento " + elemento + " se encontro en el indice" + indiceArrglo);
+			contador1[0]++;
+			contador1[2]++;
+			if (arreglo[indiceArrglo].equals(elemento)) {
+				System.out.println("Elemento " + elemento + " se encontro en el indice " + indiceArrglo);
 				return arreglo[indiceArrglo];
 			}
 			indiceArrglo++;
 			indiceArrglo %= tamaño;
 			contador++;
-			if (contador > 7) {
-				System.out.print("Error");
+			contador1[2]++;
+			if (contador > 100) {
+				System.out.println("------Error-------");
 				break;
 			}
 		}
 		return null;
 	}
-	
 }
 
 
@@ -181,10 +238,60 @@ public class PruebaBusqueda {
 
 	public static void main(String[] args) {
 		
-		int[] nums = new int[100];
+		int cnt=100;
+		int[] nums = new int[cnt];
 		for (int i = 0; i < 100; i++) {
 			nums[i]=(int)(Math.random()*100);
 		}
+		
+		Menu.impresionNumeros(nums);
+		boolean salir=false;
+		String[] opciones = {"Buscar valor por Busqueda Binaria","Buscar valor por Hash"};
+		
+		do {
+			
+			Menu.mostrarMenu(opciones);
+			byte opc= (byte) Menu.validacionNatural();
+			
+			if (opc==(opciones.length+1)) {
+				salir=true;
+			}else {
+				switch (opc) {
+				case 1:
+					System.out.println("Valor a buscar:");
+					int valor = Menu.validacionNatural();
+					int[] numeros = Insercion.ordenacionInsercion(nums);
+					
+					if(BusquedaBinaria.busquedaBin(numeros, valor)) {
+						System.out.println(valor+" encontrado");
+					}else {
+						System.out.println(valor+" no encontrado");
+					}
+					break;
+				case 2:
+					
+					String[] numsHash=new String[cnt];
+					for (int i = 0; i < cnt; i+=1) {
+						numsHash[i]=Integer.toString(nums[i]);
+					}
+					
+					Hash funcion = new Hash(100);
+					funcion.funcionHash(numsHash, funcion.arreglo);
+					
+					System.out.println("Valor a buscar");
+					String elemento = Integer.toString(Menu.validacionNatural());
+					String buscarElemento = funcion.buscarClave(elemento);	
+					if(buscarElemento==null) {
+						System.out.println("\nElemento no encontrado");
+					}
+					break;
+				default:System.out.println("Opción no válida");break;
+				}//switch
+				Menu.impresionNumeros(nums);
+			}//else
+			
+		} while (!salir);
+		System.out.println("Fin de ejecucion");
 
 	}
 
