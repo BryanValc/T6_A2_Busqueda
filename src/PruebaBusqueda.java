@@ -265,6 +265,7 @@ public class PruebaBusqueda {
 				case 1:
 					System.out.println("Valor a buscar:");
 					int valor = Menu.validacionNatural();
+					long ini = System.nanoTime();
 					int[] numeros = Insercion.ordenacionInsercion(nums);
 					
 					BusquedaBinaria bb = new BusquedaBinaria();
@@ -274,8 +275,8 @@ public class PruebaBusqueda {
 					}else {
 						System.out.println(valor+" no encontrado");
 					}
-					
-					
+					long fin = System.nanoTime();
+					System.out.println("Ejecucion en milisegundos: "+(fin-ini));
 					
 					break;
 				case 2:
@@ -289,6 +290,7 @@ public class PruebaBusqueda {
 					funcion.funcionHash(numsHash, funcion.arreglo);
 					
 					System.out.println("Valor a buscar");
+					long inic = System.nanoTime();
 					String elemento = Integer.toString(Menu.validacionNatural());
 					String buscarElemento = funcion.buscarClave(elemento);	
 					if(buscarElemento==null) {
@@ -296,6 +298,10 @@ public class PruebaBusqueda {
 					}
 					
 					funcion.mostrarContador();
+					long fina = System.nanoTime();
+					System.out.println("Ejecucion en milisegundos: "+(fina-inic));
+					
+					
 					
 					break;
 				default:System.out.println("Opción no válida");break;
