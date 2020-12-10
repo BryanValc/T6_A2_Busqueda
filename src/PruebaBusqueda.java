@@ -267,7 +267,9 @@ public class PruebaBusqueda {
 					int valor = Menu.validacionNatural();
 					int[] numeros = Insercion.ordenacionInsercion(nums);
 					
-					if(BusquedaBinaria.busquedaBin(numeros, valor)) {
+					BusquedaBinaria bb = new BusquedaBinaria();
+					
+					if(bb.busquedaBin(numeros, valor)) {
 						System.out.println(valor+" encontrado");
 					}else {
 						System.out.println(valor+" no encontrado");
