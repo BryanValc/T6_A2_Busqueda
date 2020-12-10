@@ -114,13 +114,16 @@ class Menu{
 
 class BusquedaBinaria {
 
-	public static boolean busquedaBin(int[] numeros, int valorBuscado) {
+	public boolean busquedaBin(int[] numeros, int valorBuscado) {
+		int[] contador= new int[2];
 
 		int inicio=0;
 		int fin=numeros.length-1;
 		int x=0;
+		contador[0]++;
 		while (inicio<=fin) {
 			int puntero=(int)((inicio+fin)/2);
+			contador[1]++;
 			if (valorBuscado == numeros[puntero]) {
 				x=1;
 				break;
@@ -131,6 +134,8 @@ class BusquedaBinaria {
 			}
 				
 		}
+		System.out.println("Numero de recorridos "+contador[0]);
+		System.out.println("Numero de comparaciones "+contador[1]);
 		return x==1;
 
 	}
@@ -141,16 +146,16 @@ class Hash{
 	String[] arreglo;
 	int tamaño;
 	int contador;
-	int [] contador1=new int[3];// 1-> recorridos 2-> intercambios 3-> comparaciones
+	int [] contador1=new int[2];
 	public void reiniciarContador() {
 		contador1[0]=0;
-		contador1[2]=0;
+		contador1[1]=0;
 	}
 	public void mostrarContador() {
-		System.out.println("Numero de recorridos-> "+contador1[0]);
-		System.out.println("Numero de Comparaciones-> "+contador1[2]);
+		System.out.println("Numero de recorridos "+contador1[0]);
+		System.out.println("Numero de comparaciones "+contador1[1]);
 		contador1[0]=0;
-		contador1[2]=0;
+		contador1[1]=0;
 	}
 	// Constructor
 	public Hash(int tam) {
@@ -162,15 +167,16 @@ class Hash{
 	public void funcionHash(String[] cadArreglo, String[] arreglo) {
 		int i;
 		// Ciclo para asiganar a la varible elemento el valor de la cadena
+		contador1[0]++;
 		for (i = 0; i < cadArreglo.length; i++) {
-			contador1[0]++;
 			String elemento = cadArreglo[i];
 			int indiceArreglo = Integer.parseInt(elemento) % 20;
 			System.out.println("Indice: " + indiceArreglo + " para " + elemento);
 			// Mpetodo para solucionar una colision
+			contador1[0]++;
 			while (arreglo[indiceArreglo] != "-1") {
-				contador1[2]++;
-				contador1[0]++;
+				contador1[1]++;
+				;
 				indiceArreglo++;
 				System.out.println("Colisión en el indice: " + (indiceArreglo - 1) + " cambiando por " + indiceArreglo);
 				indiceArreglo %= tamaño; 
@@ -212,10 +218,9 @@ class Hash{
 		
 		int indiceArrglo = Integer.parseInt(elemento) % 99;
 		int contador = 0;
-		
+		contador1[0]++;
 		while (arreglo[indiceArrglo] != "-1") {
-			contador1[0]++;
-			contador1[2]++;
+			contador1[1]++;
 			if (arreglo[indiceArrglo].equals(elemento)) {
 				System.out.println("Elemento " + elemento + " se encontro en el indice " + indiceArrglo);
 				return arreglo[indiceArrglo];
@@ -223,7 +228,7 @@ class Hash{
 			indiceArrglo++;
 			indiceArrglo %= tamaño;
 			contador++;
-			contador1[2]++;
+			contador1[1]++;
 			if (contador > 100) {
 				System.out.println("------Error-------");
 				break;
@@ -267,6 +272,9 @@ public class PruebaBusqueda {
 					}else {
 						System.out.println(valor+" no encontrado");
 					}
+					
+					
+					
 					break;
 				case 2:
 					
@@ -284,6 +292,9 @@ public class PruebaBusqueda {
 					if(buscarElemento==null) {
 						System.out.println("\nElemento no encontrado");
 					}
+					
+					funcion.mostrarContador();
+					
 					break;
 				default:System.out.println("Opción no válida");break;
 				}//switch
